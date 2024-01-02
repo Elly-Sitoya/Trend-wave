@@ -1,8 +1,8 @@
 import { useState } from "react";
-import PostItem from "../components/PostItem";
 import { DUMMY_POSTS } from "../utils";
+import PostItem from "./PostItem";
 
-const CategoryPost = () => {
+const Posts = () => {
   const [posts, setPosts] = useState(DUMMY_POSTS);
   return (
     <section className="posts">
@@ -29,4 +29,4 @@ const CategoryPost = () => {
     </section>
   );
 };
-export default CategoryPost;
+export default Posts;
