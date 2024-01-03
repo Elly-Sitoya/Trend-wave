@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { modules, formats, POST_CATEGORIES } from "../utils";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 const EditPost = () => {
   const [title, setTitle] = useState("");
@@ -25,7 +25,7 @@ const EditPost = () => {
             autoFocus
           />
 
-          <ReactQuill modules={modules} formats={formats} theme="snow" />
+          {/* <ReactQuill modules={modules} formats={formats} theme="snow" /> */}
 
           <select
             name="category"
