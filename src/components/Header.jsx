@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import logo from "../images/logo_1.png";
 import { CiMenuBurger } from "react-icons/ci";
 import { AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../context/userContext";
 
 const Header = () => {
   const [isNavShowing, setIsNavShowing] = useState(
@@ -17,13 +18,15 @@ const Header = () => {
     }
   };
 
+  const { currentUser } = useContext(UserContext);
+
   return (
     <nav>
       <div className="container nav-container">
         <Link to={"/"} className="nav_logo" onClick={closeNavHandler}>
           <img src={logo} alt="Navbar logo" />
         </Link>
-        {isNavShowing && (
+        {currentUser?.id && isNavShowing && (
           <ul className="nav-menu" onClick={closeNavHandler}>
             <li>
               <Link to={"/profile/1234"}>Elly Sitoya</Link>
@@ -36,6 +39,16 @@ const Header = () => {
             </li>
             <li>
               <Link to={"/logout"}>logout</Link>
+            </li>
+          </ul>
+        )}
+        {!currentUser?.id && isNavShowing && (
+          <ul className="nav-menu" onClick={closeNavHandler}>
+            <li>
+              <Link to={"/authors"}>authors</Link>
+            </li>
+            <li>
+              <Link to={"/login"}>login</Link>
             </li>
           </ul>
         )}
