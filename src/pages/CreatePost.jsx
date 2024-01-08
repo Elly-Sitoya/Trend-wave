@@ -4,6 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { UserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -11,6 +12,7 @@ const CreatePost = () => {
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const { currentUser } = useContext(UserContext);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const token = currentUser?.token;
@@ -21,14 +23,45 @@ const CreatePost = () => {
     }
   }, []);
 
+  const createPost = async (e) => {
+    e.preventDefault();
+
+    // const postData = new FormData();
+    // postData.set("title", title);
+    // postData.set("category", category);
+    // postData.set("description", description);
+    // postData.set("thumbnail", thumbnail);
+
+    const postData = { title, category, description, thumbnail };
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/posts`,
+        postData,
+        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.status == 200) {
+        navigate("/");
+      }
+
+      console.log(postData);
+      console.log(thumbnail);
+    } catch (error) {
+      // setError(error.response.data.message);
+      console.log(error.response.data);
+      console.log(thumbnail);
+    }
+  };
+
   return (
     <section className="create-post">
       <div className="container">
         <h2>Create Post</h2>
 
-        <p className="form_error-message">This ia an error message</p>
+        {error && <p className="form_error-message">{error}</p>}
 
-        <form className="form create_post-form">
+        <form className="form create_post-form" onSubmit={createPost}>
           <input
             type="text"
             placeholder="Title"
@@ -36,8 +69,6 @@ const CreatePost = () => {
             onChange={(e) => setTitle(e.target.value)}
             autoFocus
           />
-
-          <ReactQuill modules={modules} formats={formats} theme="snow" />
 
           <select
             name="category"
@@ -48,6 +79,14 @@ const CreatePost = () => {
               return <option key={cat}>{cat}</option>;
             })}
           </select>
+
+          <ReactQuill
+            modules={modules}
+            value={description}
+            onChange={setDescription}
+            formats={formats}
+            theme="snow"
+          />
 
           <input
             type="file"

@@ -369,7 +369,7 @@ textarea {
 .ql-editor {
   overflow: scroll;
   background: var(--color-white);
-  height: 80rem !important;
+  height: 8rem !important;
 }
 
 /* ================================= Authors ================================= */
