@@ -1,9 +1,19 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { DUMMY_POSTS } from "../utils";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/userContext";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState(DUMMY_POSTS);
+  const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
+  const token = currentUser?.token;
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  });
 
   console.log(posts);
   return (

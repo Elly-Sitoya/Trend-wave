@@ -1,13 +1,24 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { modules, formats, POST_CATEGORIES } from "../utils";
-// import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import { UserContext } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 const EditPost = () => {
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("Uncategorized");
   const [description, setDescription] = useState("");
   const [thumbnail, setThumbnail] = useState("");
+  const { currentUser } = useContext(UserContext);
+  const token = currentUser?.token;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/login");
+    }
+  });
 
   return (
     <section className="create-post">
@@ -25,7 +36,7 @@ const EditPost = () => {
             autoFocus
           />
 
-          {/* <ReactQuill modules={modules} formats={formats} theme="snow" /> */}
+          <ReactQuill modules={modules} formats={formats} theme="snow" />
 
           <select
             name="category"
