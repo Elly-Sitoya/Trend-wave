@@ -20,8 +20,10 @@ const Posts = () => {
 
         setPosts(response?.data?.posts);
         console.log(response);
+        console.log("hey");
       } catch (error) {
         console.log(error);
+        console.log("hey");
       }
 
       setIsLoading(false);
@@ -62,7 +64,7 @@ const Posts = () => {
             }
           )
         ) : (
-          <h2 className="center">No post Found</h2>
+          <h2 className="center">No post Yet</h2>
         )}
       </div>
     </section>
