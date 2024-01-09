@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "../images/logo_1.png";
+import logo from "../images/logo_transparent.png";
 import { CiMenuBurger } from "react-icons/ci";
 import { AiOutlineClose } from "react-icons/ai";
 import { useContext, useState } from "react";
