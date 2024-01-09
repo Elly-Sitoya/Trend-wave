@@ -62,7 +62,7 @@ const Posts = () => {
             }
           )
         ) : (
-          <h2 className="center">No post yet</h2>
+          <h2 className="center">No post Found</h2>
         )}
       </div>
     </section>
