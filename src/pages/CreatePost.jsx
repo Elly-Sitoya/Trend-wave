@@ -26,13 +26,11 @@ const CreatePost = () => {
   const createPost = async (e) => {
     e.preventDefault();
 
-    // const postData = new FormData();
-    // postData.set("title", title);
-    // postData.set("category", category);
-    // postData.set("description", description);
-    // postData.set("thumbnail", thumbnail);
-
-    const postData = { title, category, description, thumbnail };
+    const postData = new FormData();
+    postData.set("title", title);
+    postData.set("category", category);
+    postData.set("description", description);
+    postData.set("thumbnail", thumbnail);
 
     try {
       const response = await axios.post(
@@ -41,16 +39,11 @@ const CreatePost = () => {
         { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
       );
 
-      if (response.status == 200) {
+      if (response.status === 201) {
         navigate("/");
       }
-
-      console.log(postData);
-      console.log(thumbnail);
     } catch (error) {
-      // setError(error.response.data.message);
-      console.log(error.response.data);
-      console.log(thumbnail);
+      setError(error.response?.data?.message);
     }
   };
 

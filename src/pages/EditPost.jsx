@@ -3,7 +3,8 @@ import { modules, formats, POST_CATEGORIES } from "../utils";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { UserContext } from "../context/userContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const EditPost = () => {
   const [title, setTitle] = useState("");
@@ -13,6 +14,8 @@ const EditPost = () => {
   const { currentUser } = useContext(UserContext);
   const token = currentUser?.token;
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const { id } = useParams();
 
   useEffect(() => {
     if (!token) {
@@ -20,14 +23,51 @@ const EditPost = () => {
     }
   });
 
+  useEffect(() => {
+    const getPost = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/posts/${id}`
+        );
+        setTitle(response.data.title);
+        setDescription(response.data.description);
+        setCategory(response.data.category);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getPost();
+  }, []);
+
+  const editPost = async (e) => {
+    e.preventDefault();
+
+    try {
+      const postData = new FormData();
+      postData.set("title", title);
+      postData.set("description", description);
+      postData.set("category", category);
+      postData.set("thumbnail", thumbnail);
+
+      const response = await axios.patch(
+        `${process.env.REACT_APP_BASE_URL}/posts/${id}`,
+        postData,
+        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      navigate("/");
+    } catch (error) {
+      setError(error.response.data.message);
+    }
+  };
   return (
     <section className="create-post">
       <div className="container">
         <h2>Edit Post</h2>
 
-        <p className="form_error-message">This ia an error message</p>
+        {error && <p className="form_error-message">{error}</p>}
 
-        <form className="form create_post-form">
+        <form className="form create_post-form" onSubmit={editPost}>
           <input
             type="text"
             placeholder="Title"
@@ -36,7 +76,13 @@ const EditPost = () => {
             autoFocus
           />
 
-          <ReactQuill modules={modules} formats={formats} theme="snow" />
+          <ReactQuill
+            modules={modules}
+            formats={formats}
+            theme="snow"
+            value={description}
+            onChange={setDescription}
+          />
 
           <select
             name="category"
