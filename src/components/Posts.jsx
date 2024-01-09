@@ -19,11 +19,8 @@ const Posts = () => {
         );
 
         setPosts(response?.data?.posts);
-        console.log(response);
-        console.log("hey");
       } catch (error) {
         console.log(error);
-        console.log("hey");
       }
 
       setIsLoading(false);

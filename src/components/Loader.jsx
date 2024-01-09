@@ -1,4 +1,4 @@
-import LoadingGIF from "../images/avatar16.jpg";
+import LoadingGIF from "../images/loading-gif.gif";
 
 const Loader = () => {
   return (

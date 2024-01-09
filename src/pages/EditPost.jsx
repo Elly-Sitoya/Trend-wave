@@ -43,11 +43,13 @@ const EditPost = () => {
     e.preventDefault();
 
     try {
-      const postData = new FormData();
-      postData.set("title", title);
-      postData.set("description", description);
-      postData.set("category", category);
-      postData.set("thumbnail", thumbnail);
+      // const postData = new FormData();
+      // postData.set("title", title);
+      // postData.set("description", description);
+      // postData.set("category", category);
+      // postData.set("thumbnail", thumbnail);
+
+      const postData = { title, category, description, thumbnail };
 
       const response = await axios.patch(
         `${process.env.REACT_APP_BASE_URL}/posts/${id}`,

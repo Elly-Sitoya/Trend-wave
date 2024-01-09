@@ -21,22 +21,31 @@ const CreatePost = () => {
     if (!token) {
       navigate("/login");
     }
-  }, []);
+  }, [token]);
 
   const createPost = async (e) => {
     e.preventDefault();
 
     const postData = new FormData();
+
     postData.set("title", title);
     postData.set("category", category);
     postData.set("description", description);
     postData.set("thumbnail", thumbnail);
 
+    
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/posts`,
         postData,
-        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
 
       if (response.status === 201) {
@@ -44,6 +53,7 @@ const CreatePost = () => {
       }
     } catch (error) {
       setError(error.response?.data?.message);
+      console.log(postData);
     }
   };
 
@@ -56,6 +66,7 @@ const CreatePost = () => {
 
         <form className="form create_post-form" onSubmit={createPost}>
           <input
+          name="title"
             type="text"
             placeholder="Title"
             value={title}
@@ -82,6 +93,7 @@ const CreatePost = () => {
           />
 
           <input
+            name="thumbnail"
             type="file"
             onChange={(e) => setThumbnail(e.target.files[0])}
             accept="png,jpg,jpeg"
